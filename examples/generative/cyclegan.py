@@ -318,7 +318,7 @@ def get_resnet_generator(
 
     # Final block
     x = ReflectionPadding2D(padding=(3, 3))(x)
-    x = layers.Conv2D(3, (7, 7), padding="valid")(x)
+    x = layers.Conv2D(input_img_size[2], (7, 7), padding="valid")(x)
     x = layers.Activation("tanh")(x)
 
     model = keras.models.Model(img_input, x, name=name)
@@ -347,7 +347,7 @@ def get_discriminator(
     x = layers.LeakyReLU(0.2)(x)
 
     num_filters = filters
-    for num_downsample_block in range(3):
+    for num_downsample_block in range(num_downsampling):
         num_filters *= 2
         if num_downsample_block < 2:
             x = downsample(
